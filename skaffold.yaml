@@ -1,0 +1,29 @@
+# -- https://skaffold.dev/docs/references/yaml/
+---
+apiVersion: skaffold/v4beta1
+kind: Config
+metadata:
+  name: apps
+build:
+  local:
+    # tryImportMissing: true
+    concurrency: 0
+  artifacts:
+    - image: fastapi-debug-test
+      sync:
+        infer:
+          - main.py
+  platforms:
+    - linux/amd64
+
+manifests:
+  rawYaml:
+    - ./deployment.yaml
+
+deploy:
+  kubectl: {}
+
+portForward:
+  - resourceName: fastapi-deployment
+    resourceType: deployment
+    port: 8080
